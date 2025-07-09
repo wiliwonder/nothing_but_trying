@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    :root {
+        --primary: #4285f4;
+        --primary-light: #e8f0fe;
+        --secondary: #34a853;
+        --danger: #ea4335;
+        --warning: #fbbc05;
+        --light: #ffffff;
+        --light-gray: #f8f9fa;
+        --medium-gray: #dadce0;
+        --dark-gray: #5f6368;
+        --dark: #202124;
+        --success: #34a853;
+    }
+    
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.6;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    header {
+        text-align: center;
+        padding: 30px 0;
+        margin-bottom: 20px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    h1 {
+        font-size: 2.3rem;
+        margin-bottom: 10px;
+        color: var(--dark);
+        font-weight: 500;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+        color: var(--dark-gray);
+        max-width: 600px;
+        margin: 0 auto;
+        font-weight: 400;
+    }
+    
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .card {
+        background: var(--light);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: 1px solid var(--medium-gray);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+    
+    .card-header {
+        background: var(--primary-light);
+        padding: 16px 24px;
+        font-weight: 500;
+        font-size: 1.2rem;
+        color: var(--dark);
+        border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .card-body {
+        padding: 24px;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark-gray);
+        font-size: 0.95rem;
+    }
+    
+    input, select {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--medium-gray);
+        background: var(--light);
+        color: var(--dark);
+        font-size: 1rem;
+        transition: border 0.2s ease;
+    }
+    
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    }
+    
+    button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s ease, transform 0.1s ease;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 0.5px;
+    }
+    
+    button:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+    }
+    
+    button:active {
+        transform: translateY(0);
+    }
+    
+    .btn-danger {
+        background: var(--danger);
+    }
+    
+    .btn-danger:hover {
+        background: #d23c30;
+    }
+    
+    .btn-success {
+        background: var(--secondary);
+    }
+    
+    .btn-success:hover {
+        background: #2e9849;
+    }
+    
+    .btn-warning {
+        background: var(--warning);
+        color: var(--dark);
+    }
+    
+    .btn-warning:hover {
+        background: #e6ac00;
+    }
+    
+    .pool-display {
+        min-height: 150px;
+        max-height: 300px;
+        overflow-y: auto;
+        background: var(--light-gray);
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 16px;
+        border: 1px solid var(--medium-gray);
+    }
+    
+    .task-item, .punishment-item {
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        background: white;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--medium-gray);
+        transition: all 0.2s ease;
+    }
+    
+    .task-item:hover, .punishment-item:hover {
+        border-color: var(--primary);
+        box-shadow: 0 2px 6px rgba(66, 133, 244, 0.1);
+    }
+    
+    .category-tag {
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        border-radius: 16px;
+        margin-left: 8px;
+        font-weight: 500;
+    }
+    
+    .draw-result {
+        text-align: center;
+        padding: 30px 20px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--light-gray);
+        border-radius: 12px;
+        margin: 10px 0;
+    }
+    
+    .result-text {
+        font-size: 1.8rem;
+        margin: 20px 0;
+        font-weight: 500;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+        color: var(--dark);
+    }
+    
+    .result-placeholder {
+        color: var(--dark-gray);
+        font-style: italic;
+        font-weight: 400;
+    }
+    
+    .draw-controls {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        padding: 14px 28px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        border-radius: 10px;
+    }
+    
+    .task-result {
+        color: var(--secondary);
+    }
+    
+    .punishment-result {
+        color: var(--danger);
+    }
+    
+    .delete-btn {
+        background: transparent;
+        color: var(--danger);
+        border: none;
+        cursor: pointer;
+        font-size: 1.3rem;
+        padding: 4px 8px;
+        transition: color 0.2s;
+        opacity: 0.7;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    
+    .delete-btn:hover {
+        background: rgba(234, 67, 53, 0.1);
+        opacity: 1;
+    }
+    
+    .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border: 1px solid var(--medium-gray);
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 0 15px;
+    }
+    
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: var(--primary);
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--dark-gray);
+        margin-top: 5px;
+    }
+    
+    @media (max-width: 768px) {
+        .card-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .draw-controls {
+            flex-direction: column;
+        }
+        
+        .action-btn {
+            width: 100%;
+        }
+        
+        .stats {
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            flex: 0 0 50%;
+            margin-bottom: 20px;
+        }
+    }
+    
+    .pulse {
+        animation: pulse 0.5s ease-in-out;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+    
+    .history {
+        margin-top: 30px;
+    }
+    
+    .history-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .history-item {
+        background: white;
+        padding: 10px 18px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        border: 1px solid var(--medium-gray);
+        display: flex;
+        align-items: center;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+        color: var(--dark);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--medium-gray);
+        font-weight: 500;
+    }
+    
+    .empty-message {
+        text-align: center;
+        color: var(--dark-gray);
+        padding: 20px;
+        font-style: italic;
+    }
+    
+    .flex-row {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .flex-row .form-group {
+        flex: 1;
+        min-width: 200px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>任务抽取系统</h1>
+            <p class="subtitle">创建自定义任务池与惩罚池，随机抽取任务并设置反激励措施，提高执行动力</p>
+        </header>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-header">
+                    <span>任务池管理</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="taskDescription">任务描述</label>
+                        <input type="text" id="taskDescription" placeholder="例如：晨跑30分钟">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskCategory">任务类别 (可选)</label>
+                        <input type="text" id="taskCategory" placeholder="例如：健康">
+                    </div>
+                    <button id="addTaskBtn" class="btn-success">添加任务</button>
+                    
+                    <div class="pool-display" id="taskPoolDisplay">
+                        <!-- 任务列表将通过JS动态生成 -->
+                        <div class="empty-message">任务池为空，请添加任务</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span>惩罚池管理</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="punishmentDescription">惩罚描述</label>
+                        <input type="text" id="punishmentDescription" placeholder="例如：捐款100元">
+                    </div>
+                    <div class="form-group">
+                        <label for="punishmentCategory">惩罚类别 (可选)</label>
+                        <input type="text" id="punishmentCategory" placeholder="例如：财务">
+                    </div>
+                    <button id="addPunishmentBtn" class="btn-danger">添加惩罚</button>
+                    
+                    <div class="pool-display" id="punishmentPoolDisplay">
+                        <!-- 惩罚列表将通过JS动态生成 -->
+                        <div class="empty-message">惩罚池为空，请添加惩罚</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span>抽取任务与惩罚</span>
+            </div>
+            <div class="card-body">
+                <div class="draw-result">
+                    <div id="taskResult" class="result-text">
+                        <div class="result-placeholder">点击下方按钮抽取任务</div>
+                    </div>
+                    <div id="punishmentResult" class="result-text">
+                        <div class="result-placeholder">点击下方按钮抽取惩罚</div>
+                    </div>
+                    
+                    <div class="draw-controls">
+                        <select id="taskCategoryFilter">
+                            <option value="">所有任务类别</option>
+                            <!-- 类别选项将通过JS动态生成 -->
+                        </select>
+                        <button id="drawTaskBtn" class="action-btn btn-success">抽取任务</button>
+                        
+                        <select id="punishmentCategoryFilter">
+                            <option value="">所有惩罚类别</option>
+                            <!-- 类别选项将通过JS动态生成 -->
+                        </select>
+                        <button id="drawPunishmentBtn" class="action-btn btn-danger">抽取惩罚</button>
+                        
+                        <button id="drawBothBtn" class="action-btn btn-warning">同时抽取</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="taskCount">0</div>
+                <div class="stat-label">任务总数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="punishmentCount">0</div>
+                <div class="stat-label">惩罚总数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="drawCount">0</div>
+                <div class="stat-label">抽取次数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="categoryCount">0</div>
+                <div class="stat-label">类别数量</div>
+            </div>
+        </div>
+        
+        <div class="card history">
+            <div class="card-header">
+                <span>最近抽取记录</span>
+            </div>
+            <div class="card-body">
+                <div class="history-list" id="historyList">
+                    <!-- 历史记录将通过JS动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 面向对象实现
+        class Task {
+            constructor(description, category = null) {
+                this.id = Date.now() + Math.random().toString(36).substr(2, 9);
+                this.description = description;
+                this.category = category;
+            }
+        }
+
+        class Punishment {
+            constructor(description, category = null) {
+                this.id = Date.now() + Math.random().toString(36).substr(2, 9);
+                this.description = description;
+                this.category = category;
+            }
+        }
+
+        class TaskManager {
+            constructor() {
+                this.taskPool = [];
+                this.punishmentPool = [];
+                this.history = [];
+                this.drawCount = 0;
+                
+                this.loadFromLocalStorage();
+            }
+            
+            addTask(task) {
+                this.taskPool.push(task);
+                this.saveToLocalStorage();
+                this.updateUI();
+            }
+            
+            addPunishment(punishment) {
+                this.punishmentPool.push(punishment);
+                this.saveToLocalStorage();
+                this.updateUI();
+            }
+            
+            removeTask(taskId) {
+                this.taskPool = this.taskPool.filter(task => task.id !== taskId);
+                this.saveToLocalStorage();
+                this.updateUI();
+            }
+            
+            removePunishment(punishmentId) {
+                this.punishmentPool = this.punishmentPool.filter(p => p.id !== punishmentId);
+                this.saveToLocalStorage();
+                this.updateUI();
+            }
+            
+            drawTask(category = null) {
+                let availableTasks = category 
+                    ? this.taskPool.filter(t => t.category === category) 
+                    : this.taskPool;
+                
+                if (availableTasks.length === 0) {
+                    return null;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availableTasks.length);
+                const selectedTask = availableTasks[randomIndex];
+                
+                this.history.unshift({
+                    type: 'task',
+                    item: selectedTask,
+                    timestamp: new Date()
+                });
+                
+                this.drawCount++;
+                this.saveToLocalStorage();
+                return selectedTask;
+            }
+            
+            drawPunishment(category = null) {
+                let availablePunishments = category 
+                    ? this.punishmentPool.filter(p => p.category === category) 
+                    : this.punishmentPool;
+                
+                if (availablePunishments.length === 0) {
+                    return null;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availablePunishments.length);
+                const selectedPunishment = availablePunishments[randomIndex];
+                
+                this.history.unshift({
+                    type: 'punishment',
+                    item: selectedPunishment,
+                    timestamp: new Date()
+                });
+                
+                this.drawCount++;
+                this.saveToLocalStorage();
+                return selectedPunishment;
+            }
+            
+            drawBoth(taskCategory = null, punishmentCategory = null) {
+                const task = this.drawTask(taskCategory);
+                const punishment = this.drawPunishment(punishmentCategory);
+                
+                return { task, punishment };
+            }
+            
+            getCategories() {
+                const taskCategories = [...new Set(this.taskPool.map(t => t.category).filter(c => c))];
+                const punishmentCategories = [...new Set(this.punishmentPool.map(p => p.category).filter(c => c))];
+                
+                return [...new Set([...taskCategories, ...punishmentCategories])];
+            }
+            
+            saveToLocalStorage() {
+                localStorage.setItem('taskManagerData', JSON.stringify({
+                    taskPool: this.taskPool,
+                    punishmentPool: this.punishmentPool,
+                    history: this.history.slice(0, 10), // 保存最近10条记录
+                    drawCount: this.drawCount
+                }));
+            }
+            
+            loadFromLocalStorage() {
+                const savedData = localStorage.getItem('taskManagerData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    this.taskPool = data.taskPool || [];
+                    this.punishmentPool = data.punishmentPool || [];
+                    this.history = data.history || [];
+                    this.drawCount = data.drawCount || 0;
+                }
+            }
+            
+            updateUI() {
+                // 更新任务池显示
+                const taskPoolDisplay = document.getElementById('taskPoolDisplay');
+                if (this.taskPool.length === 0) {
+                    taskPoolDisplay.innerHTML = '<div class="empty-message">任务池为空，请添加任务</div>';
+                } else {
+                    taskPoolDisplay.innerHTML = this.taskPool.map(task => `
+                        <div class="task-item">
+                            <div>
+                                ${task.description}
+                                ${task.category ? `<span class="category-tag">${task.category}</span>` : ''}
+                            </div>
+                            <button class="delete-btn" data-id="${task.id}" data-type="task">×</button>
+                        </div>
+                    `).join('');
+                }
+                
+                // 更新惩罚池显示
+                const punishmentPoolDisplay = document.getElementById('punishmentPoolDisplay');
+                if (this.punishmentPool.length === 0) {
+                    punishmentPoolDisplay.innerHTML = '<div class="empty-message">惩罚池为空，请添加惩罚</div>';
+                } else {
+                    punishmentPoolDisplay.innerHTML = this.punishmentPool.map(punishment => `
+                        <div class="punishment-item">
+                            <div>
+                                ${punishment.description}
+                                ${punishment.category ? `<span class="category-tag">${punishment.category}</span>` : ''}
+                            </div>
+                            <button class="delete-btn" data-id="${punishment.id}" data-type="punishment">×</button>
+                        </div>
+                    `).join('');
+                }
+                
+                // 更新统计信息
+                document.getElementById('taskCount').textContent = this.taskPool.length;
+                document.getElementById('punishmentCount').textContent = this.punishmentPool.length;
+                document.getElementById('drawCount').textContent = this.drawCount;
+                document.getElementById('categoryCount').textContent = this.getCategories().length;
+                
+                // 更新类别选择器
+                const categories = this.getCategories();
+                const taskCategoryFilter = document.getElementById('taskCategoryFilter');
+                const punishmentCategoryFilter = document.getElementById('punishmentCategoryFilter');
+                
+                // 清除现有选项（保留"所有类别"选项）
+                while (taskCategoryFilter.options.length > 1) taskCategoryFilter.remove(1);
+                while (punishmentCategoryFilter.options.length > 1) punishmentCategoryFilter.remove(1);
+                
+                // 添加新类别
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    
+                    taskCategoryFilter.appendChild(option.cloneNode(true));
+                    punishmentCategoryFilter.appendChild(option);
+                });
+                
+                // 更新历史记录
+                const historyList = document.getElementById('historyList');
+                if (this.history.length === 0) {
+                    historyList.innerHTML = '<div class="empty-message">暂无抽取记录</div>';
+                } else {
+                    historyList.innerHTML = this.history.slice(0, 10).map(item => {
+                        const typeClass = item.type === 'task' ? 'task-result' : 'punishment-result';
+                        const icon = item.type === 'task' ? '✓' : '✗';
+                        return `
+                            <div class="history-item ${typeClass}">
+                                ${icon} ${item.item.description}
+                                ${item.item.category ? `<span class="category-tag">${item.item.category}</span>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }
+
+        // 初始化任务管理器
+        const taskManager = new TaskManager();
+        
+        // 页面加载完成后初始化UI
+        document.addEventListener('DOMContentLoaded', () => {
+            taskManager.updateUI();
+            
+            // 添加任务事件
+            document.getElementById('addTaskBtn').addEventListener('click', () => {
+                const description = document.getElementById('taskDescription').value.trim();
+                const category = document.getElementById('taskCategory').value.trim() || null;
+                
+                if (description) {
+                    const task = new Task(description, category);
+                    taskManager.addTask(task);
+                    
+                    // 清空输入框
+                    document.getElementById('taskDescription').value = '';
+                    document.getElementById('taskCategory').value = '';
+                } else {
+                    alert('请输入任务描述');
+                }
+            });
+            
+            // 添加惩罚事件
+            document.getElementById('addPunishmentBtn').addEventListener('click', () => {
+                const description = document.getElementById('punishmentDescription').value.trim();
+                const category = document.getElementById('punishmentCategory').value.trim() || null;
+                
+                if (description) {
+                    const punishment = new Punishment(description, category);
+                    taskManager.addPunishment(punishment);
+                    
+                    // 清空输入框
+                    document.getElementById('punishmentDescription').value = '';
+                    document.getElementById('punishmentCategory').value = '';
+                } else {
+                    alert('请输入惩罚描述');
+                }
+            });
+            
+            // 抽取任务事件
+            document.getElementById('drawTaskBtn').addEventListener('click', () => {
+                const category = document.getElementById('taskCategoryFilter').value || null;
+                const task = taskManager.drawTask(category);
+                
+                const resultElement = document.getElementById('taskResult');
+                if (task) {
+                    resultElement.innerHTML = `
+                        <div class="task-result pulse">
+                            ${task.description}
+                            ${task.category ? `<div class="category-tag">${task.category}</div>` : ''}
+                        </div>
+                    `;
+                    resultElement.classList.add('pulse');
+                    setTimeout(() => resultElement.classList.remove('pulse'), 500);
+                } else {
+                    resultElement.innerHTML = '<div class="result-placeholder">没有符合条件的任务</div>';
+                }
+            });
+            
+            // 抽取惩罚事件
+            document.getElementById('drawPunishmentBtn').addEventListener('click', () => {
+                const category = document.getElementById('punishmentCategoryFilter').value || null;
+                const punishment = taskManager.drawPunishment(category);
+                
+                const resultElement = document.getElementById('punishmentResult');
+                if (punishment) {
+                    resultElement.innerHTML = `
+                        <div class="punishment-result pulse">
+                            ${punishment.description}
+                            ${punishment.category ? `<div class="category-tag">${punishment.category}</div>` : ''}
+                        </div>
+                    `;
+                    resultElement.classList.add('pulse');
+                    setTimeout(() => resultElement.classList.remove('pulse'), 500);
+                } else {
+                    resultElement.innerHTML = '<div class="result-placeholder">没有符合条件的惩罚</div>';
+                }
+            });
+            
+            // 同时抽取任务和惩罚
+            document.getElementById('drawBothBtn').addEventListener('click', () => {
+                const taskCategory = document.getElementById('taskCategoryFilter').value || null;
+                const punishmentCategory = document.getElementById('punishmentCategoryFilter').value || null;
+                
+                const { task, punishment } = taskManager.drawBoth(taskCategory, punishmentCategory);
+                
+                const taskResultElement = document.getElementById('taskResult');
+                if (task) {
+                    taskResultElement.innerHTML = `
+                        <div class="task-result pulse">
+                            ${task.description}
+                            ${task.category ? `<div class="category-tag">${task.category}</div>` : ''}
+                        </div>
+                    `;
+                    taskResultElement.classList.add('pulse');
+                    setTimeout(() => taskResultElement.classList.remove('pulse'), 500);
+                } else {
+                    taskResultElement.innerHTML = '<div class="result-placeholder">没有符合条件的任务</div>';
+                }
+                
+                const punishmentResultElement = document.getElementById('punishmentResult');
+                if (punishment) {
+                    punishmentResultElement.innerHTML = `
+                        <div class="punishment-result pulse">
+                            ${punishment.description}
+                            ${punishment.category ? `<div class="category-tag">${punishment.category}</div>` : ''}
+                        </div>
+                    `;
+                    punishmentResultElement.classList.add('pulse');
+                    setTimeout(() => punishmentResultElement.classList.remove('pulse'), 500);
+                } else {
+                    punishmentResultElement.innerHTML = '<div class="result-placeholder">没有符合条件的惩罚</div>';
+                }
+            });
+            
+            // 删除项目事件（委托）
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const id = e.target.getAttribute('data-id');
+                    const type = e.target.getAttribute('data-type');
+                    
+                    if (type === 'task') {
+                        taskManager.removeTask(id);
+                    } else if (type === 'punishment') {
+                        taskManager.removePunishment(id);
+                    }
+                }
+            });
+            
+            // 示例数据
+            if (taskManager.taskPool.length === 0) {
+                taskManager.addTask(new Task('阅读30分钟', '学习'));
+                taskManager.addTask(new Task('晨跑20分钟', '健康'));
+                taskManager.addTask(new Task('完成工作报告', '工作'));
+                taskManager.addTask(new Task('学习新编程语言', '技能'));
+            }
+            
+            if (taskManager.punishmentPool.length === 0) {
+                taskManager.addPunishment(new Punishment('捐款100元', '财务'));
+                taskManager.addPunishment(new Punishment('做50个俯卧撑', '健康'));
+                taskManager.addPunishment(new Punishment('整理衣柜', '家务'));
+                taskManager.addPunishment(new Punishment('不吃甜食一周', '健康'));
+            }
+        });
+    </script>
+</body>
+</html>
